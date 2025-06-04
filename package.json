@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/fira-code": "^5.2.6",
+    "@fontsource/mystery-quest": "^5.2.5",
+    "framer-motion": "^12.15.0",
+    "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "next": "15.3.3"
+    "sql.js": "^1.13.0"
   }
 }
