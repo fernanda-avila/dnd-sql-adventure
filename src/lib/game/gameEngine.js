@@ -23,13 +23,13 @@ class GameEngine {
     if (!this.characters[characterKey]) {
       throw new Error('Personagem não encontrado');
     }
-    
+
     this.currentCharacter = this.characters[characterKey];
     this.currentMissionIndex = 0;
     this.completedMissions = [];
     this.playerStats.attempts = 0;
     this.playerStats.hintsUsed = 0;
-    
+
     return {
       character: this.currentCharacter,
       firstMission: this.getCurrentMission()
@@ -51,14 +51,13 @@ class GameEngine {
   getHint() {
     const mission = this.getCurrentMission();
     if (!mission) return 'Nenhuma missão ativa';
-    
+
     this.playerStats.hintsUsed++;
     this.playerStats.score = Math.max(0, this.playerStats.score - 5);
-    
+
     return mission.hint || 'Sem dica disponível.';
   }
 
-  // Validação mais inteligente de comandos SQL
   normalizeSQL(sql) {
     return sql
       .trim()
@@ -68,33 +67,31 @@ class GameEngine {
       .toLowerCase();
   }
 
-  // Comparação flexível de comandos SQL
   isSQLEquivalent(userSQL, expectedSQL) {
     const normalizedUser = this.normalizeSQL(userSQL);
     const normalizedExpected = this.normalizeSQL(expectedSQL);
-    
-    // Comparação exata
+
     if (normalizedUser === normalizedExpected) return true;
-    
-    // Verificação para comandos SELECT (ordem das colunas pode variar)
+
     if (normalizedExpected.startsWith('select')) {
       const userParts = normalizedUser.split(/\s+/);
       const expectedParts = normalizedExpected.split(/\s+/);
-      
-      // Comparação básica de estrutura
-      return userParts[0] === 'select' && 
-             userParts.includes('from') &&
-             userParts[userParts.indexOf('from') + 1] === 
-             expectedParts[expectedParts.indexOf('from') + 1];
+
+      return (
+        userParts[0] === 'select' &&
+        userParts.includes('from') &&
+        userParts[userParts.indexOf('from') + 1] ===
+          expectedParts[expectedParts.indexOf('from') + 1]
+      );
     }
-    
+
     return false;
   }
 
   executeCommand(userInput) {
     this.playerStats.attempts++;
     const mission = this.getCurrentMission();
-    
+
     if (!mission) {
       return {
         success: false,
@@ -107,34 +104,54 @@ class GameEngine {
 
     if (isCorrect) {
       this.completedMissions.push(mission);
-      this.currentMissionIndex++;
-      this.playerStats.score += 100 - (this.playerStats.hintsUsed * 5);
-      this.playerStats.hintsUsed = 0; // Reseta dicas usadas após sucesso
+      this.playerStats.score += 100 - this.playerStats.hintsUsed * 5;
+      this.playerStats.hintsUsed = 0;
 
-      const hasMoreMissions = this.currentMissionIndex < 
-                            this.missions[this.currentCharacter.key].length;
-      
-      return {
-        success: true,
-        message: mission.successMessage,
-        progress: this.getProgress(),
-        completed: !hasMoreMissions,
-        stats: this.playerStats,
-        nextMission: hasMoreMissions ? this.getCurrentMission() : null
-      };
+      const missionsList = this.missions[this.currentCharacter.key];
+      const isLastMission = this.currentMissionIndex === missionsList.length - 1;
+
+      if (isLastMission) {
+        const finalMessage = `
+🌟 Você derrotou o Dragão Sombrio e recuperou todos os Cristais Elementais!
+🛡️ O Reino de Eldoria está a salvo graças à sua coragem e raciocínio lógico!
+🏆 Pontuação final: ${this.playerStats.score}
+📚 Total de tentativas: ${this.playerStats.attempts}
+
+A sabedoria retornou às montanhas de Eldoria e as águas voltaram a fluir puras nas florestas encantadas.
+Os aldeões cantam seu nome nas tavernas, e você se tornou uma lenda viva! 🎉
+        `;
+        return {
+          success: true,
+          message: finalMessage,
+          completed: true,
+          stats: this.playerStats,
+          nextMission: null
+        };
+      } else {
+        this.currentMissionIndex++;
+        return {
+          success: true,
+          message: mission.successMessage,
+          progress: this.getProgress(),
+          completed: false,
+          stats: this.playerStats,
+          nextMission: this.getCurrentMission()
+        };
+      }
     } else {
       return {
         success: false,
-        message: mission.failureMessage || `Comando incorreto. Tente novamente. (Dica: ${mission.hint})`,
+        message:
+          mission.failureMessage ||
+          `Comando incorreto. Tente novamente. (Dica: ${mission.hint})`,
         stats: this.playerStats
       };
     }
   }
 
-  // Métodos adicionais para melhor experiência
   getCharacterProgress(characterKey) {
     const completed = this.completedMissions.filter(
-      m => m.character === characterKey
+      (m) => m.character === characterKey
     ).length;
     const total = this.missions[characterKey]?.length || 0;
     return { completed, total };
