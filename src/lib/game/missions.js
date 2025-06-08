@@ -1,284 +1,192 @@
 export const missions = {
   warrior: [
     {
-      description: "O Dragão Sombrio ataca! Use sua Espada de Aço para atacar.",
-      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Espada de Aço';",
-      successMessage: "Ataque com Espada de Aço bem-sucedido!",
-      failureMessage: "Você precisa usar SELECT para verificar se tem a Espada de Aço.",
-      hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Espada de Aço';"
+      description: "📜 Capítulo 1: O Início - Crie seu inventário de guerreiro (tabela 'warrior_inventory')",
+      expectedCommand: "CREATE TABLE warrior_inventory (item_name VARCHAR(50), strength INT);",
+      successMessage: "✅ Inventário criado! Agora você pode começar sua jornada.",
+      failureMessage: "❌ Use: CREATE TABLE warrior_inventory (item_name VARCHAR(50), strength INT);",
+      hint: "Dica: Primeiro crie a tabela com CREATE TABLE",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "O Dragão destruiu sua Espada de Aço! Você perdeu sua arma.",
-      expectedCommand: "DELETE FROM warrior_inventory WHERE item_name = 'Espada de Aço';",
-      successMessage: "Espada de Aço removida do inventário, você está desarmado.",
-      failureMessage: "Use DELETE para remover a Espada de Aço do inventário.",
-      hint: "DELETE FROM warrior_inventory WHERE item_name = 'Espada de Aço';"
+      description: "🔍 Verifique se sua tabela foi criada corretamente (mostre todas as tabelas disponíveis)",
+      expectedCommand: "SELECT name FROM sqlite_master WHERE type='table';",
+      successMessage: "✅ Tabela encontrada! Seu inventário está pronto para uso.",
+      failureMessage: "❌ Use SELECT para verificar tabelas existentes",
+      hint: "Dica: SELECT name FROM sqlite_master WHERE type='table';",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "Você precisa encontrar a Espada de Dragão para derrotar o inimigo.",
-      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Espada de Dragão';",
-      successMessage: "Espada de Dragão encontrada no inventário!",
-      failureMessage: "A Espada de Dragão não está no inventário. Use SELECT para procurar.",
-      hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Espada de Dragão';"
+      description: "🛡️ Seu mestre lhe dá uma Espada de Madeira (força: 5). Adicione ao inventário",
+      expectedCommand: "INSERT INTO warrior_inventory VALUES ('Espada de Madeira', 5);",
+      successMessage: "✅ Primeira arma adquirida! Hora de treinar.",
+      failureMessage: "❌ Use INSERT INTO warrior_inventory VALUES ('Espada de Madeira', 5);",
+      hint: "Dica: INSERT INTO tabela VALUES (valor1, valor2)",
+      image: "/assets/warrior-scene.jpg"  
     },
     {
-      description: "Aprimore a Espada de Dragão para torná-la lendária e vencer o Dragão Sombrio.",
-      expectedCommand: "UPDATE warrior_inventory SET item_name = 'Espada de Dragão Lendária' WHERE item_name = 'Espada de Dragão';",
-      successMessage: "Espada de Dragão aprimorada para versão lendária!",
-      failureMessage: "Use UPDATE para aprimorar a Espada de Dragão.",
-      hint: "UPDATE warrior_inventory SET item_name = 'Espada de Dragão Lendária' WHERE item_name = 'Espada de Dragão';"
+      description: "🔍 Confira se a Espada de Madeira está no inventário",
+      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Espada de Madeira';",
+      successMessage: "✅ Arma confirmada! Você está pronto para sua primeira missão.",
+      failureMessage: "❌ Use SELECT para verificar itens",
+      hint: "Dica: SELECT * FROM tabela WHERE condição",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "Você encontra um escudo antigo. Pegue-o para aumentar sua defesa.",
-      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Escudo Antigo';",
-      successMessage: "Escudo Antigo encontrado! Defesa aumentada.",
-      failureMessage: "Use SELECT para procurar o Escudo Antigo.",
-      hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Escudo Antigo';"
+      description: "⚔️ Missão: Derrote Goblin! Verifique se tem armas com força > 3",
+      expectedCommand: "SELECT * FROM warrior_inventory WHERE strength > 3;",
+      successMessage: "✅ Missão cumprida! Você ganha uma Espada de Ferro (força: 15).",
+      failureMessage: "❌ Use SELECT com condição numérica",
+      hint: "Dica: SELECT * FROM tabela WHERE coluna > valor",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "O escudo está danificado. Remova-o do seu inventário.",
-      expectedCommand: "DELETE FROM warrior_inventory WHERE item_name = 'Escudo Antigo';",
-      successMessage: "Escudo Antigo removido do inventário.",
-      failureMessage: "Use DELETE para remover o escudo danificado.",
-      hint: "DELETE FROM warrior_inventory WHERE item_name = 'Escudo Antigo';"
+      description: "🔄 Substitua sua espada velha pela nova Espada de Ferro",
+      expectedCommand: "DELETE FROM warrior_inventory; INSERT INTO warrior_inventory VALUES ('Espada de Ferro', 15);",
+      successMessage: "✅ Arma atualizada! Você se sente mais forte.",
+      failureMessage: "❌ Remova a antiga primeiro, depois insira a nova",
+      hint: "Dica: Dois comandos - DELETE depois INSERT",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "Você encontra uma Poção de Cura. Adicione-a ao seu inventário.",
-      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Poção de Cura';",
-      successMessage: "Poção de Cura adicionada ao inventário!",
-      failureMessage: "Use SELECT para verificar se a Poção de Cura está no inventário.",
-      hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Poção de Cura';"
+      description: "🔍 Liste todos seus itens para preparar a próxima missão",
+      expectedCommand: "SELECT * FROM warrior_inventory;",
+      successMessage: "✅ Preparação completa! Hora de enfrentar o Orc Chefe.",
+      failureMessage: "❌ Use SELECT * para ver todos os itens",
+      hint: "Dica: SELECT * FROM tabela",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "Use a Poção de Cura para recuperar sua vida.",
-      expectedCommand: "DELETE FROM warrior_inventory WHERE item_name = 'Poção de Cura';",
-      successMessage: "Poção de Cura usada, vida recuperada.",
-      failureMessage: "Use DELETE para remover a Poção de Cura após o uso.",
-      hint: "DELETE FROM warrior_inventory WHERE item_name = 'Poção de Cura';"
+      description: "🏆 Derrote o Orc Chefe! Atualize sua espada para 'Espada de Aço' (força: 30)",
+      expectedCommand: "UPDATE warrior_inventory SET item_name = 'Espada de Aço', strength = 30;",
+      successMessage: "✅ Vitória épica! Sua espada foi aprimorada.",
+      failureMessage: "❌ Use UPDATE para modificar múltiplas colunas",
+      hint: "Dica: UPDATE tabela SET col1=valor1, col2=valor2",
+      image: "/assets/warrior-scene.jpg"
     },
     {
-      description: "Encontre e equipe a Armadura de Ouro para enfrentar o chefe final.",
-      expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Armadura de Ouro';",
-      successMessage: "Armadura de Ouro equipada! Pronto para a batalha final.",
-      failureMessage: "Use SELECT para procurar a Armadura de Ouro.",
-      hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Armadura de Ouro';"
+      description: "🐉 Desafio Final: Verifique se tem equipamento suficiente (força total >= 30)",
+      expectedCommand: "SELECT SUM(strength) FROM warrior_inventory;",
+      successMessage: "✅ Força suficiente! Você derrota o Dragão e vira lenda!",
+      failureMessage: "❌ Use SUM para calcular força total",
+      hint: "Dica: SELECT SUM(coluna) FROM tabela",
+      image: "/assets/warrior-scene.jpg"
     }
   ],
   mage: [
     {
-      description: "O Lorde das Trevas aparece! Lance sua Bola de Fogo para atacar.",
-      expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Bola de Fogo';",
-      successMessage: "Bola de Fogo lançada com sucesso!",
-      failureMessage: "Você precisa usar SELECT para verificar se tem a Bola de Fogo.",
-      hint: "SELECT * FROM mage_spells WHERE spell_name = 'Bola de Fogo';"
+      description: "📜 Capítulo 1: O Aprendiz - Crie seu grimório (tabela 'mage_spells')",
+      expectedCommand: "CREATE TABLE mage_spells (spell_name VARCHAR(50), power INT, mana_cost INT);",
+      successMessage: "✅ Grimório criado! O caminho da magia começa.",
+      failureMessage: "❌ Use: CREATE TABLE mage_spells (spell_name VARCHAR(50), power INT, mana_cost INT);",
+      hint: "Dica: Crie tabela com múltiplas colunas",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "A magia não foi suficiente! Aprimore a Bola de Fogo para aumentar seu poder.",
-      expectedCommand: "UPDATE mage_spells SET spell_name = 'Bola de Fogo Suprema' WHERE spell_name = 'Bola de Fogo';",
-      successMessage: "Magia atualizada para Bola de Fogo Suprema!",
-      failureMessage: "Use UPDATE para aprimorar a magia no grimório.",
-      hint: "UPDATE mage_spells SET spell_name = 'Bola de Fogo Suprema' WHERE spell_name = 'Bola de Fogo';"
+      description: "🔍 Verifique a estrutura do seu grimório (mostre as colunas)",
+      expectedCommand: "PRAGMA table_info(mage_spells);",
+      successMessage: "✅ Estrutura verificada! Pronto para aprender feitiços.",
+      failureMessage: "❌ Use PRAGMA para verificar colunas",
+      hint: "Dica: PRAGMA table_info(nome_tabela);",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "Lance a Bola de Fogo Suprema para derrotar o Lorde das Trevas.",
-      expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Bola de Fogo Suprema';",
-      successMessage: "Bola de Fogo Suprema lançada, inimigo derrotado!",
-      failureMessage: "Use SELECT para encontrar a magia aprimorada no grimório.",
-      hint: "SELECT * FROM mage_spells WHERE spell_name = 'Bola de Fogo Suprema';"
+      description: "✨ Aprenda seu primeiro feitiço: 'Luz' (poder: 5, custo: 2)",
+      expectedCommand: "INSERT INTO mage_spells VALUES ('Luz', 5, 2);",
+      successMessage: "✅ Feitiço aprendido! Agora você pode iluminar caminhos.",
+      failureMessage: "❌ Use INSERT com múltiplos valores",
+      hint: "Dica: INSERT INTO tabela VALUES (valor1, valor2, valor3)",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "Após a batalha, a magia se perde. Remova a Bola de Fogo Suprema do grimório.",
-      expectedCommand: "DELETE FROM mage_spells WHERE spell_name = 'Bola de Fogo Suprema';",
-      successMessage: "Magia removida do grimório.",
-      failureMessage: "Use DELETE para remover a magia do grimório.",
-      hint: "DELETE FROM mage_spells WHERE spell_name = 'Bola de Fogo Suprema';"
+      description: "🔍 Liste todos feitiços com custo de mana <= 5",
+      expectedCommand: "SELECT * FROM mage_spells WHERE mana_cost <= 5;",
+      successMessage: "✅ Feitiços disponíveis confirmados!",
+      failureMessage: "❌ Use SELECT com condição",
+      hint: "Dica: SELECT * FROM tabela WHERE coluna <= valor",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "Você encontra um novo feitiço: Gelo Eterno. Adicione ao grimório.",
-      expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Gelo Eterno';",
-      successMessage: "Feitiço Gelo Eterno adicionado ao grimório!",
-      failureMessage: "Use SELECT para verificar se o feitiço está no grimório.",
-      hint: "SELECT * FROM mage_spells WHERE spell_name = 'Gelo Eterno';"
+      description: "🔥 Derrote os Ratos Mutantes! Aprenda 'Bola de Fogo' (poder: 20, custo: 10)",
+      expectedCommand: "INSERT INTO mage_spells VALUES ('Bola de Fogo', 20, 10);",
+      successMessage: "✅ Inimigos derrotados! Novo feitiço poderoso aprendido.",
+      failureMessage: "❌ Adicione o novo feitiço",
+      hint: "Dica: INSERT INTO tabela VALUES ('Bola de Fogo', 20, 10)",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "O feitiço Gelo Eterno está fraco. Aprimore-o.",
-      expectedCommand: "UPDATE mage_spells SET spell_name = 'Gelo Eterno Supremo' WHERE spell_name = 'Gelo Eterno';",
-      successMessage: "Feitiço aprimorado para Gelo Eterno Supremo!",
-      failureMessage: "Use UPDATE para aprimorar o feitiço.",
-      hint: "UPDATE mage_spells SET spell_name = 'Gelo Eterno Supremo' WHERE spell_name = 'Gelo Eterno';"
+      description: "🔍 Compare os feitiços: Liste os com poder > 10",
+      expectedCommand: "SELECT spell_name FROM mage_spells WHERE power > 10;",
+      successMessage: "✅ Feitiços poderosos identificados!",
+      failureMessage: "❌ Use SELECT com colunas específicas",
+      hint: "Dica: SELECT coluna FROM tabela WHERE condição",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "Use o Gelo Eterno Supremo para congelar o inimigo.",
-      expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Gelo Eterno Supremo';",
-      successMessage: "Inimigo congelado com Gelo Eterno Supremo!",
-      failureMessage: "Use SELECT para encontrar o feitiço aprimorado.",
-      hint: "SELECT * FROM mage_spells WHERE spell_name = 'Gelo Eterno Supremo';"
+      description: "📚 Encontre o Tomo Antigo e atualize 'Luz' para 'Luz Solar' (poder: 15)",
+      expectedCommand: "UPDATE mage_spells SET spell_name = 'Luz Solar', power = 15 WHERE spell_name = 'Luz';",
+      successMessage: "✅ Feitiço aprimorado! Seu conhecimento cresce.",
+      failureMessage: "❌ Use UPDATE com condição específica",
+      hint: "Dica: UPDATE tabela SET col1=valor WHERE condição",
+      image: "/assets/mage-scene.jpg"
     },
     {
-      description: "Após a batalha, remova o Gelo Eterno Supremo do grimório.",
-      expectedCommand: "DELETE FROM mage_spells WHERE spell_name = 'Gelo Eterno Supremo';",
-      successMessage: "Feitiço removido do grimório.",
-      failureMessage: "Use DELETE para remover o feitiço do grimório.",
-      hint: "DELETE FROM mage_spells WHERE spell_name = 'Gelo Eterno Supremo';"
-    },
-    {
-      description: "Encontre e equipe o Cajado Arcano para aumentar seu poder mágico.",
-      expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Cajado Arcano';",
-      successMessage: "Cajado Arcano equipado! Poder mágico aumentado.",
-      failureMessage: "Use SELECT para procurar o Cajado Arcano.",
-      hint: "SELECT * FROM mage_spells WHERE spell_name = 'Cajado Arcano';"
+      description: "⚡ Desafio Final: Liste feitiços por eficiência (poder/mana) > 1.5",
+      expectedCommand: "SELECT spell_name FROM mage_spells WHERE (power*1.0/mana_cost) > 1.5;",
+      successMessage: "✅ Eficiência mágica comprovada! Você se torna um Arquimago!",
+      failureMessage: "❌ Use cálculo na condição",
+      hint: "Dica: SELECT com (power/mana_cost) > valor",
+      image: "/assets/mage-scene.jpg"
     }
   ],
   rogue: [
     {
-      description: "Você está diante da porta trancada da Fortaleza Negra. Use sua Ganzuá para arrombar.",
-      expectedCommand: "SELECT * FROM rogue_tools WHERE tool_name = 'Ganzuá';",
-      successMessage: "Porta arrombada com sucesso usando a Ganzuá!",
-      failureMessage: "Use SELECT para verificar se você tem a Ganzuá.",
-      hint: "SELECT * FROM rogue_tools WHERE tool_name = 'Ganzuá';"
+      description: "📜 Capítulo 1: O Ladino - Crie sua bolsa de ferramentas (tabela 'rogue_gear')",
+      expectedCommand: "CREATE TABLE rogue_gear (item_name VARCHAR(50), stealth_level INT);",
+      successMessage: "✅ Bolsa criada! Hora de coletar equipamentos.",
+      failureMessage: "❌ Use: CREATE TABLE rogue_gear (item_name VARCHAR(50), stealth_level INT);",
+      hint: "Dica: Crie tabela com colunas para nome e nível",
+      image: "/assets/rogue-scene.jpg"
     },
     {
-      description: "Durante a fuga, você perde a Ganzuá. Ela não está mais com você.",
-      expectedCommand: "DELETE FROM rogue_tools WHERE tool_name = 'Ganzuá';",
-      successMessage: "Ganzuá removida do kit, você está vulnerável.",
-      failureMessage: "Use DELETE para remover a Ganzuá do kit.",
-      hint: "DELETE FROM rogue_tools WHERE tool_name = 'Ganzuá';"
+      description: "🔍 Verifique itens com stealth_level > 0 (sua bolsa está vazia?)",
+      expectedCommand: "SELECT * FROM rogue_gear WHERE stealth_level > 0;",
+      successMessage: "✅ Busca concluída! Hora de conseguir seu primeiro equipamento.",
+      failureMessage: "❌ Use SELECT mesmo com tabela vazia",
+      hint: "Dica: SELECT funciona mesmo sem resultados",
+      image: "/assets/rogue-scene.jpg"
     },
     {
-      description: "Para um ataque surpresa, você precisa da Adaga Sombria. Procure-a no kit.",
-      expectedCommand: "SELECT * FROM rogue_tools WHERE tool_name = 'Adaga Sombria';",
-      successMessage: "Adaga Sombria encontrada, ataque furtivo pronto!",
-      failureMessage: "Adaga Sombria não está no kit. Use SELECT para procurar.",
-      hint: "SELECT * FROM rogue_tools WHERE tool_name = 'Adaga Sombria';"
+      description: "🗝️ Roube uma 'Ganzuá Velha' (stealth: 3) do mercador distraído",
+      expectedCommand: "INSERT INTO rogue_gear VALUES ('Ganzuá Velha', 3);",
+      successMessage: "✅ Primeira aquisição! Hora de praticar lockpicking.",
+      failureMessage: "❌ Adicione o item à tabela",
+      hint: "Dica: INSERT INTO tabela VALUES ('nome', valor)",
+      image: "/assets/rogue-scene"
     },
     {
-      description: "Aprimore a Adaga Sombria para garantir a vitória na missão.",
-      expectedCommand: "UPDATE rogue_tools SET tool_name = 'Adaga Sombria Mestra' WHERE tool_name = 'Adaga Sombria';",
-      successMessage: "Adaga Sombria aprimorada para versão mestra!",
-      failureMessage: "Use UPDATE para aprimorar a Adaga Sombria.",
-      hint: "UPDATE rogue_tools SET tool_name = 'Adaga Sombria Mestra' WHERE tool_name = 'Adaga Sombria';"
+      description: "🔍 Liste todos itens com stealth_level entre 2 e 5",
+      expectedCommand: "SELECT * FROM rogue_gear WHERE stealth_level BETWEEN 2 AND 5;",
+      successMessage: "✅ Itens identificados! Você está pronto para se infiltrar.",
+      failureMessage: "❌ Use BETWEEN para faixas de valores",
+      hint: "Dica: SELECT com BETWEEN valor1 AND valor2",
+      image: "/assets/rogue-scene.jpg"
     },
     {
-      description: "Você encontra uma Capa de Invisibilidade. Procure-a no kit.",
-      expectedCommand: "SELECT * FROM rogue_tools WHERE tool_name = 'Capa de Invisibilidade';",
-      successMessage: "Capa de Invisibilidade encontrada! Agora você pode se esconder.",
-      failureMessage: "Use SELECT para procurar a Capa de Invisibilidade.",
-      hint: "SELECT * FROM rogue_tools WHERE tool_name = 'Capa de Invisibilidade';"
+      description: "🏰 Missão: Infiltre-se no castelo! Atualize sua ganzuá para 'Ganzuá Mestra' (stealth: 7)",
+      expectedCommand: "UPDATE rogue_gear SET item_name = 'Ganzuá Mestra', stealth_level = 7 WHERE item_name = 'Ganzuá Velha';",
+      successMessage: "✅ Infiltração bem-sucedida! Você encontra um 'Mapa do Tesouro'.",
+      failureMessage: "❌ Atualize nome e nível simultaneamente",
+      hint: "Dica: UPDATE com SET múltiplo e WHERE",
+      image: "/assets/rogue-scene.jpg"
+    },
+    {
+      description: "🔍 Verifique se tem itens com stealth_level >= 5 para a próxima missão",
+      expectedCommand: "SELECT COUNT(*) FROM rogue_gear WHERE stealth_level >= 5;",
+      successMessage: "✅ Equipamento adequado! Você pode enfrentar a Guarda Real.",
+      failureMessage: "❌ Use COUNT para verificar quantidade",
+      hint: "Dica: SELECT COUNT(*) FROM tabela WHERE condição",
+      image: "/assets/rogue-scene.jpg"
     }
   ]
 };
-
-export default missions;
-missions.warrior.push(
-    {
-        description: "Você encontra uma Lança de Prata. Adicione-a ao seu inventário.",
-        expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Lança de Prata';",
-        successMessage: "Lança de Prata adicionada ao inventário!",
-        failureMessage: "Use SELECT para verificar se a Lança de Prata está no inventário.",
-        hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Lança de Prata';"
-    },
-    {
-        description: "A Lança de Prata está enferrujada. Remova-a do inventário.",
-        expectedCommand: "DELETE FROM warrior_inventory WHERE item_name = 'Lança de Prata';",
-        successMessage: "Lança de Prata removida do inventário.",
-        failureMessage: "Use DELETE para remover a Lança de Prata.",
-        hint: "DELETE FROM warrior_inventory WHERE item_name = 'Lança de Prata';"
-    },
-    {
-        description: "Você encontra um Elmo de Ferro. Procure-o no inventário.",
-        expectedCommand: "SELECT * FROM warrior_inventory WHERE item_name = 'Elmo de Ferro';",
-        successMessage: "Elmo de Ferro encontrado! Proteção aumentada.",
-        failureMessage: "Use SELECT para procurar o Elmo de Ferro.",
-        hint: "SELECT * FROM warrior_inventory WHERE item_name = 'Elmo de Ferro';"
-    },
-    {
-        description: "Aprimore o Elmo de Ferro para Elmo de Ferro Reforçado.",
-        expectedCommand: "UPDATE warrior_inventory SET item_name = 'Elmo de Ferro Reforçado' WHERE item_name = 'Elmo de Ferro';",
-        successMessage: "Elmo de Ferro aprimorado para versão reforçada!",
-        failureMessage: "Use UPDATE para aprimorar o Elmo de Ferro.",
-        hint: "UPDATE warrior_inventory SET item_name = 'Elmo de Ferro Reforçado' WHERE item_name = 'Elmo de Ferro';"
-    },
-    {
-        description: "Remova o Elmo de Ferro Reforçado após a batalha.",
-        expectedCommand: "DELETE FROM warrior_inventory WHERE item_name = 'Elmo de Ferro Reforçado';",
-        successMessage: "Elmo de Ferro Reforçado removido do inventário.",
-        failureMessage: "Use DELETE para remover o Elmo de Ferro Reforçado.",
-        hint: "DELETE FROM warrior_inventory WHERE item_name = 'Elmo de Ferro Reforçado';"
-    }
-);
-
-missions.mage.push(
-    {
-        description: "Você descobre o feitiço Raio Arcano. Adicione ao grimório.",
-        expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Raio Arcano';",
-        successMessage: "Feitiço Raio Arcano adicionado ao grimório!",
-        failureMessage: "Use SELECT para verificar se o feitiço está no grimório.",
-        hint: "SELECT * FROM mage_spells WHERE spell_name = 'Raio Arcano';"
-    },
-    {
-        description: "O Raio Arcano está fraco. Aprimore-o.",
-        expectedCommand: "UPDATE mage_spells SET spell_name = 'Raio Arcano Supremo' WHERE spell_name = 'Raio Arcano';",
-        successMessage: "Feitiço aprimorado para Raio Arcano Supremo!",
-        failureMessage: "Use UPDATE para aprimorar o feitiço.",
-        hint: "UPDATE mage_spells SET spell_name = 'Raio Arcano Supremo' WHERE spell_name = 'Raio Arcano';"
-    },
-    {
-        description: "Use o Raio Arcano Supremo para atacar o inimigo.",
-        expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Raio Arcano Supremo';",
-        successMessage: "Inimigo atingido com Raio Arcano Supremo!",
-        failureMessage: "Use SELECT para encontrar o feitiço aprimorado.",
-        hint: "SELECT * FROM mage_spells WHERE spell_name = 'Raio Arcano Supremo';"
-    },
-    {
-        description: "Após o uso, remova o Raio Arcano Supremo do grimório.",
-        expectedCommand: "DELETE FROM mage_spells WHERE spell_name = 'Raio Arcano Supremo';",
-        successMessage: "Feitiço removido do grimório.",
-        failureMessage: "Use DELETE para remover o feitiço do grimório.",
-        hint: "DELETE FROM mage_spells WHERE spell_name = 'Raio Arcano Supremo';"
-    },
-    {
-        description: "Encontre e equipe o Manto Místico para proteção extra.",
-        expectedCommand: "SELECT * FROM mage_spells WHERE spell_name = 'Manto Místico';",
-        successMessage: "Manto Místico equipado! Proteção aumentada.",
-        failureMessage: "Use SELECT para procurar o Manto Místico.",
-        hint: "SELECT * FROM mage_spells WHERE spell_name = 'Manto Místico';"
-    }
-);
-
-missions.rogue.push(
-    {
-        description: "Você encontra uma Bomba de Fumaça. Procure-a no kit.",
-        expectedCommand: "SELECT * FROM rogue_tools WHERE tool_name = 'Bomba de Fumaça';",
-        successMessage: "Bomba de Fumaça encontrada! Pronto para fuga rápida.",
-        failureMessage: "Use SELECT para procurar a Bomba de Fumaça.",
-        hint: "SELECT * FROM rogue_tools WHERE tool_name = 'Bomba de Fumaça';"
-    },
-    {
-        description: "Use a Bomba de Fumaça para escapar de um inimigo.",
-        expectedCommand: "DELETE FROM rogue_tools WHERE tool_name = 'Bomba de Fumaça';",
-        successMessage: "Bomba de Fumaça usada, fuga bem-sucedida.",
-        failureMessage: "Use DELETE para remover a Bomba de Fumaça após o uso.",
-        hint: "DELETE FROM rogue_tools WHERE tool_name = 'Bomba de Fumaça';"
-    },
-    {
-        description: "Você encontra uma Armadilha de Urso. Adicione ao kit.",
-        expectedCommand: "SELECT * FROM rogue_tools WHERE tool_name = 'Armadilha de Urso';",
-        successMessage: "Armadilha de Urso adicionada ao kit!",
-        failureMessage: "Use SELECT para verificar se a Armadilha de Urso está no kit.",
-        hint: "SELECT * FROM rogue_tools WHERE tool_name = 'Armadilha de Urso';"
-    },
-    {
-        description: "Aprimore a Armadilha de Urso para Armadilha de Urso Afiada.",
-        expectedCommand: "UPDATE rogue_tools SET tool_name = 'Armadilha de Urso Afiada' WHERE tool_name = 'Armadilha de Urso';",
-        successMessage: "Armadilha de Urso aprimorada para versão afiada!",
-        failureMessage: "Use UPDATE para aprimorar a Armadilha de Urso.",
-        hint: "UPDATE rogue_tools SET tool_name = 'Armadilha de Urso Afiada' WHERE tool_name = 'Armadilha de Urso';"
-    },
-    {
-        description: "Remova a Armadilha de Urso Afiada após o uso.",
-        expectedCommand: "DELETE FROM rogue_tools WHERE tool_name = 'Armadilha de Urso Afiada';",
-        successMessage: "Armadilha de Urso Afiada removida do kit.",
-        failureMessage: "Use DELETE para remover a Armadilha de Urso Afiada.",
-        hint: "DELETE FROM rogue_tools WHERE tool_name = 'Armadilha de Urso Afiada';"
-    }
-);

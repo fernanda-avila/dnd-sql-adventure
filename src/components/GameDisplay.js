@@ -29,7 +29,7 @@ export default function GameDisplay() {
         newLines.push(`# Missão ${game.currentMissionIndex + 1}: ${nextMission.description}`);
       } else {
         newLines.push('# Parabéns! Você concluiu todas as missões.');
-        setStage('complete'); // MOSTRAR TELA FINAL AQUI
+        setStage('complete'); 
       }
     } else {
       newLines.push(result.message);
