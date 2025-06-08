@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import GameComplete from './GameComplete';
 import { characters, characterDetails } from '@/lib/game/characters';
 import GameEngine from '../lib/game/gameEngine';
 import styles from './GameDisplay.module.css';
@@ -10,6 +9,7 @@ export default function GameDisplay() {
   const [terminalLines, setTerminalLines] = useState(['# MySQL RPG Adventure']);
   const [command, setCommand] = useState('');
   const [dica, setDica] = useState(null);
+  const [gameComplete, setGameComplete] = useState(false);
 
   const handleSelectCharacter = (key) => {
     game.selectCharacter(key);
@@ -24,12 +24,13 @@ export default function GameDisplay() {
 
     if (result.success) {
       newLines.push(result.message);
-      if (result.newMission) {
-        const nextMission = game.getCurrentMission();
+
+      if (result.completed) {
+        // Mensagem final, marcar jogo completo
+        setGameComplete(true);
+      } else if (result.nextMission) {
+        const nextMission = result.nextMission;
         newLines.push(`# Missão ${game.currentMissionIndex + 1}: ${nextMission.description}`);
-      } else {
-        newLines.push('# Parabéns! Você concluiu todas as missões.');
-        setStage('complete'); 
       }
     } else {
       newLines.push(result.message);
@@ -44,21 +45,20 @@ export default function GameDisplay() {
     setDica(game.getHint());
   };
 
-  const handleRestart = () => {
-    game.reset(); // precisa implementar esse método no GameEngine
-    setStage('selectCharacter');
-    setTerminalLines(['# MySQL RPG Adventure']);
-    setCommand('');
-    setDica(null);
-  };
-
   return (
     <div className={styles.container}>
-      {stage === 'complete' ? (
-        <GameComplete onRestart={handleRestart} />
-      ) : (
+      {/* Mostra mensagem final no fim do jogo */}
+      {gameComplete && (
+        <div className={styles.gameComplete}>
+          <h2>Parabéns! 🎉</h2>
+          <p>Você completou todas as missões com sucesso!</p>
+          <p>Que sua aventura continue cheia de descobertas e aprendizado.</p>
+        </div>
+      )}
+
+      {/* Mostra jogo enquanto não finalizado */}
+      {!gameComplete && (
         <>
-          {/* Coluna da esquerda */}
           <div className={styles.leftColumn}>
             {game.currentCharacter && (
               <div className={styles.characterCard}>
@@ -113,7 +113,6 @@ export default function GameDisplay() {
             </div>
           </div>
 
-          {/* Coluna da direita com imagem da missão */}
           {stage === 'mission' && (
             <div className={styles.missionImageCard}>
               <img

@@ -23,16 +23,14 @@ class GameEngine {
     if (!this.characters[characterKey]) {
       throw new Error('Personagem não encontrado');
     }
-
     this.currentCharacter = this.characters[characterKey];
     this.currentMissionIndex = 0;
     this.completedMissions = [];
-    this.playerStats.attempts = 0;
-    this.playerStats.hintsUsed = 0;
+    this.playerStats = { score: 0, attempts: 0, hintsUsed: 0 };
 
     return {
       character: this.currentCharacter,
-      firstMission: this.getCurrentMission()
+      mission: this.getCurrentMission()
     };
   }
 
@@ -42,46 +40,38 @@ class GameEngine {
     return this.missions[key]?.[this.currentMissionIndex] || null;
   }
 
-  getProgress() {
-    if (!this.currentCharacter) return 0;
-    const totalMissions = this.missions[this.currentCharacter.key]?.length || 1;
-    return Math.floor((this.currentMissionIndex / totalMissions) * 100);
-  }
-
   getHint() {
     const mission = this.getCurrentMission();
     if (!mission) return 'Nenhuma missão ativa';
 
     this.playerStats.hintsUsed++;
     this.playerStats.score = Math.max(0, this.playerStats.score - 5);
-
-    return mission.hint || 'Sem dica disponível.';
+    return mission.hint;
   }
 
   normalizeSQL(sql) {
     return sql
       .trim()
-      .replace(/\s+/g, ' ') // Remove espaços múltiplos
-      .replace(/;+$/, '') // Remove ponto e vírgula no final
-      .replace(/`|"/g, "'") // Normaliza aspas
+      .replace(/\s+/g, ' ')
+      .replace(/;+$/, '')
+      .replace(/`|"/g, "'")
       .toLowerCase();
   }
 
   isSQLEquivalent(userSQL, expectedSQL) {
-    const normalizedUser = this.normalizeSQL(userSQL);
-    const normalizedExpected = this.normalizeSQL(expectedSQL);
+    const u = this.normalizeSQL(userSQL);
+    const e = this.normalizeSQL(expectedSQL);
+    if (u === e) return true;
 
-    if (normalizedUser === normalizedExpected) return true;
-
-    if (normalizedExpected.startsWith('select')) {
-      const userParts = normalizedUser.split(/\s+/);
-      const expectedParts = normalizedExpected.split(/\s+/);
-
+    // considera SELECT simples
+    if (e.startsWith('select')) {
+      const uParts = u.split(' ');
+      const eParts = e.split(' ');
       return (
-        userParts[0] === 'select' &&
-        userParts.includes('from') &&
-        userParts[userParts.indexOf('from') + 1] ===
-          expectedParts[expectedParts.indexOf('from') + 1]
+        uParts[0] === 'select' &&
+        uParts.includes('from') &&
+        uParts[uParts.indexOf('from') + 1] ===
+          eParts[eParts.indexOf('from') + 1]
       );
     }
 
@@ -91,81 +81,58 @@ class GameEngine {
   executeCommand(userInput) {
     this.playerStats.attempts++;
     const mission = this.getCurrentMission();
+    if (!mission)
+      return { success: false, message: 'Selecione um personagem primeiro.', stats: this.playerStats };
 
-    if (!mission) {
-      return {
-        success: false,
-        message: 'Nenhuma missão ativa. Selecione um personagem primeiro.',
-        stats: this.playerStats
-      };
-    }
-
-    const isCorrect = this.isSQLEquivalent(userInput, mission.expectedCommand);
-
-    if (isCorrect) {
-      this.completedMissions.push(mission);
-      this.playerStats.score += 100 - this.playerStats.hintsUsed * 5;
+    const correct = this.isSQLEquivalent(userInput, mission.expectedCommand);
+    if (correct) {
+      const key = this.currentCharacter.key;
+      this.completedMissions.push({ ...mission, character: key });
+      const gained = 100 - this.playerStats.hintsUsed * 5;
+      this.playerStats.score += gained;
       this.playerStats.hintsUsed = 0;
 
-      const missionsList = this.missions[this.currentCharacter.key];
-      const isLastMission = this.currentMissionIndex === missionsList.length - 1;
+      const missionsList = this.missions[key];
+      const last = this.currentMissionIndex >= missionsList.length - 1;
 
-      if (isLastMission) {
-        const finalMessage = `
-🌟 Você derrotou o Dragão Sombrio e recuperou todos os Cristais Elementais!
-🛡️ O Reino de Eldoria está a salvo graças à sua coragem e raciocínio lógico!
+      if (last) {
+        const story = `
+🌟 Você recuperou todos os cristais da classe ${this.currentCharacter.key.toUpperCase()}!
 🏆 Pontuação final: ${this.playerStats.score}
-📚 Total de tentativas: ${this.playerStats.attempts}
+🎯 Tentou ${this.playerStats.attempts} vezes
 
-A sabedoria retornou às montanhas de Eldoria e as águas voltaram a fluir puras nas florestas encantadas.
-Os aldeões cantam seu nome nas tavernas, e você se tornou uma lenda viva! 🎉
-        `;
+Sua aventura se encerra com glória e histórias que serão contadas por gerações.`;
+
         return {
           success: true,
-          message: finalMessage,
+          message: story,
           completed: true,
-          stats: this.playerStats,
-          nextMission: null
-        };
-      } else {
-        this.currentMissionIndex++;
-        return {
-          success: true,
-          message: mission.successMessage,
-          progress: this.getProgress(),
-          completed: false,
-          stats: this.playerStats,
-          nextMission: this.getCurrentMission()
+          stats: this.playerStats
         };
       }
-    } else {
+
+      this.currentMissionIndex++;
       return {
-        success: false,
-        message:
-          mission.failureMessage ||
-          `Comando incorreto. Tente novamente. (Dica: ${mission.hint})`,
+        success: true,
+        message: mission.successMessage,
+        nextMission: this.getCurrentMission(),
+        progress: Math.floor((this.currentMissionIndex / missionsList.length) * 100),
         stats: this.playerStats
       };
     }
+
+    return {
+      success: false,
+      message: mission.failureMessage || `Errado! Dica: ${mission.hint}`,
+      stats: this.playerStats
+    };
   }
 
-  getCharacterProgress(characterKey) {
-    const completed = this.completedMissions.filter(
-      (m) => m.character === characterKey
-    ).length;
-    const total = this.missions[characterKey]?.length || 0;
-    return { completed, total };
-  }
-
-  resetGame() {
+  reset() {
     this.currentCharacter = null;
     this.currentMissionIndex = 0;
     this.completedMissions = [];
-    this.playerStats = {
-      score: 0,
-      attempts: 0,
-      hintsUsed: 0
-    };
+    this.playerStats = { score: 0, attempts: 0, hintsUsed: 0 };
   }
 }
 
