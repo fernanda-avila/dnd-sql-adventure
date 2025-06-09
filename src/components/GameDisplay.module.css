@@ -6,30 +6,29 @@
   display: flex;
   height: 100vh;
   flex-direction: row;
-  height: 100vh;
   background-color: #0b1120; 
   color: #e4e4e7;
   font-family: 'Poppins', sans-serif; 
 }
 
-
 .terminal {
-  width: 100%;
+  flex: 1;
+  width: 80%;
+  max-width: 80%;
   display: flex;
   flex-direction: column;
   background-color: #0b1120;
   padding: 2rem;
   overflow-x: hidden;
+  margin: 0;
 }
 
-/* Linhas do terminal */
 .line {
   font-family: 'Fira Code', monospace;
   font-size: 0.95rem;
-  color: #a6e3a1; /* verde suave */
+  color: #a6e3a1;
   margin-bottom: 0.5rem;
 }
-
 
 .inputGroup {
   display: flex;
@@ -74,7 +73,6 @@
   box-shadow: 0 0 10px #7f5af0aa;
 }
 
-/* Dica */
 .dica {
   margin-top: 1rem;
   background-color: #1e293b;
@@ -85,7 +83,6 @@
   border-radius: 4px;
 }
 
-/* CARD DO PERSONAGEM */
 .characterCard {
   flex: 0;
   background: linear-gradient(to bottom right, #111827, #1e293b);
@@ -117,53 +114,40 @@
 }
 
 .missionImageCard {
-  width: 100%;
-  max-width: 800px;
+  flex-basis: 50%;
+  max-width: 50%;
   height: 100vh;
   overflow: hidden;
   display: flex;
-  align-items: center;
-  justify-content: center;
   background-color: #1e293b;
 }
 
 .missionImageCard img {
-  width: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 60%;
+  max-width: 50%;
   height: 100%;
-  object-fit: cover; 
   display: block;
 }
-
-
-/* Máscara escura
-.missionImageCard::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 47.5%;
-  width: 52.4%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.4); 
-  pointer-events: none; 
-} */
-
 
 .selectCharacterContainer {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1600px; /* ou qualquer tamanho fixo */
+  width: 1600px; 
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2rem;
   padding: 2rem;
   border-radius: 12px;
- 
   overflow-x: auto;
   overflow-y: hidden;
 }
+
 .selectCharacterContainer h2 {
   font-size: 2.8rem;
   font-weight: 700;
@@ -180,8 +164,6 @@
   font-weight: 500;
   text-align: center;
 }
-
-
 
 .characterButtons {
   display: flex;
@@ -206,21 +188,12 @@
   transform: scale(1.1);
 }
 
-
 .characterButtons button img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   pointer-events: none;
   user-select: none;
-}
-.selectCharacterContainer p.subtitle {
-  font-size: 1.1rem;
-  color: #a6e3a1;
-  margin-top: 0.5rem;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  text-align: center;
 }
 
 .characterCard .characterClass {
@@ -229,8 +202,6 @@
   font-weight: 600;
   font-family: 'Poppins', sans-serif;
 }
-
-/* GameDisplay.module.css */
 
 .restartButton {
   margin-top: 12px;
@@ -248,4 +219,149 @@
   background-color: #45a049;
 }
 
+/* ========== RESPONSIVIDADE ========== */
 
+@media screen and (min-width: 1440px) {
+  .selectCharacterContainer {
+    width: 80%;
+    max-width: 1600px;
+  }
+
+  .characterButtons button {
+    width: 220px;
+    height: 320px;
+  }
+
+  .characterCard p {
+    font-size: 1.1rem;
+  }
+
+  .missionImageCard {
+  flex-basis: 50%;
+  max-width: 50%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  background-color: #1e293b;
+}
+
+.missionImageCard img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+}
+
+@media screen and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .missionImageCard {
+   display: none; 
+  }
+
+  .terminal {
+    padding: 1.5rem;
+    height: 100%;
+  }
+
+  .characterButtons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .characterButtons button {
+    width: 180px;
+    height: 270px;
+  }
+
+  .selectCharacterContainer {
+    width: 95%;
+    padding: 1rem;
+  }
+
+  .selectCharacterContainer h2 {
+    font-size: 2.2rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+  }
+
+  .terminal {
+    padding: 1rem;
+  }
+
+  .line {
+    font-size: 0.85rem;
+  }
+
+  .inputGroup {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .commandInput {
+    font-size: 0.85rem;
+    padding: 0.6rem;
+  }
+
+  .executarButton,
+  .dicaButton {
+    width: 100%;
+    text-align: center;
+    padding: 0.6rem;
+  }
+
+  .characterCard {
+    padding: 1rem;
+  }
+
+  .characterCard h3 {
+    font-size: 1.3rem;
+  }
+
+  .characterCard p {
+    font-size: 0.95rem;
+  }
+
+  .selectCharacterContainer h2 {
+    font-size: 1.8rem;
+  }
+
+  .selectCharacterContainer p.subtitle {
+    font-size: 1rem;
+  }
+
+  .characterButtons {
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .characterButtons button {
+    width: 140px;
+    height: 200px;
+  }
+
+  .restartButton {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 0.95rem;
+  }
+
+  .missionImageCard {
+    max-width: 100%;
+    height: 250px;
+  }
+
+  .characterImage {
+    max-width: 220px;
+  }
+}
