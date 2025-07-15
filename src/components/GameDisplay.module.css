@@ -4,7 +4,8 @@
 .container {
   box-sizing: border-box;
   display: flex;
-  height: 100vh;
+  height: 100%;
+  width: 100%;
   flex-direction: row;
   background-color: #0b1120; 
   color: #e4e4e7;
@@ -13,8 +14,8 @@
 
 .terminal {
   flex: 1;
-  width: 80%;
-  max-width: 80%;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   background-color: #0b1120;
@@ -104,7 +105,7 @@
 .characterCard p {
   color: #d1d5db;
   margin-bottom: 1.5rem;
-  max-width: 300px;
+  width: 630px;
 }
 
 .characterImage {
@@ -116,7 +117,7 @@
 .missionImageCard {
   flex-basis: 50%;
   max-width: 50%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   background-color: #1e293b;

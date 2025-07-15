@@ -26,7 +26,7 @@ export default function GameDisplay() {
       newLines.push(result.message);
 
       if (result.completed) {
-        // Mensagem final, marcar jogo completo
+        
         setGameComplete(true);
       } else if (result.nextMission) {
         const nextMission = result.nextMission;

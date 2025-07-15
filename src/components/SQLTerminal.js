@@ -27,9 +27,9 @@ export default function SQLTerminal({ level, onExecute }) {
     }
   };
   
-  // Efeitos para animações
+  
   useEffect(() => {
-    // Efeitos visuais podem ser adicionados aqui
+ 
   }, [currentResult]);
 
   return (
@@ -100,7 +100,6 @@ const VisualizationComponent = ({ result, level }) => {
     </div>
   );
 
-  // Renderização condicional baseada no tipo de resultado
   return (
     <div className={styles.resultVisualization}>
       {result.data?.map(item => (
